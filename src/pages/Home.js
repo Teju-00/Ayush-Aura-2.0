@@ -225,7 +225,7 @@ const PlantGrid = styled.div`
 `;
 
 const PlantCard = styled(motion.div)`
-  background: var(--bg-secondary);
+  background: #ffffff;
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: var(--shadow-md);
@@ -251,7 +251,7 @@ const PlantCard = styled(motion.div)`
 
 const PlantInfo = styled.div`
   padding: 1.5rem;
-  background: var(--bg-secondary);
+  background: #ffffff;
 
   @media (max-width: 768px) {
     padding: 1rem;
@@ -261,8 +261,8 @@ const PlantInfo = styled.div`
 const PlantName = styled.h3`
   margin: 0 0 0.5rem;
   font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 700;
+  color: #1a1a1a;
   letter-spacing: -0.01em;
   font-size: 1.15rem;
 
@@ -272,12 +272,11 @@ const PlantName = styled.h3`
 `;
 
 const PlantDescription = styled.p`
-  color: var(--text-secondary);
+  color: #6b7280;
   font-size: 0.95rem;
   margin: 0;
   line-height: 1.6;
   font-weight: 400;
-  opacity: 0.9;
 
   @media (max-width: 768px) {
     font-size: 0.9rem;

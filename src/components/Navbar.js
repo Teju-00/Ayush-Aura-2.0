@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Nav = styled.nav`
-  background: rgba(255, 255, 255, 0.02);
+  background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   padding: 0.75rem 2rem;
@@ -80,7 +80,7 @@ const NavLinkWrapper = styled.div`
 `;
 
 const NavLink = styled(Link)`
-  color: var(--text-primary);
+  color: #9ca3af;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
@@ -88,7 +88,6 @@ const NavLink = styled(Link)`
   padding: 0.5rem 0.25rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: -0.01em;
-  opacity: 0.85;
   
   &::after {
     content: '';
@@ -103,8 +102,7 @@ const NavLink = styled(Link)`
   }
   
   &:hover {
-    color: var(--accent-primary);
-    opacity: 1;
+    color: #d1d5db;
   }
   
   &:hover::after {
@@ -114,7 +112,6 @@ const NavLink = styled(Link)`
   &.active {
     color: var(--accent-primary);
     font-weight: 600;
-    opacity: 1;
   }
   
   &.active::after {
