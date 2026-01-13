@@ -1,3 +1,8 @@
+// NOTE: 3D Model URLs
+// To add 3D model URLs for plants, use the 'model' field (or 'model3dUrl' / 'model_3d_url' if preferred)
+// Example: model: "https://your-storage.com/path/to/model.glb"
+// The 3D model viewer component reads from the 'model' field in each plant object
+
 const plants = [
   {
     id: 1,

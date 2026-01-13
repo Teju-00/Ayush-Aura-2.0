@@ -225,35 +225,19 @@ const PlantGrid = styled.div`
 `;
 
 const PlantCard = styled(motion.div)`
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(39, 174, 96, 0.05) 0%, rgba(46, 204, 113, 0.05) 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 1;
-    pointer-events: none;
-  }
-
   &:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 32px rgba(39, 174, 96, 0.25);
-  }
-
-  &:hover::before {
-    opacity: 1;
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-primary);
   }
 
   @media (max-width: 768px) {
@@ -267,6 +251,7 @@ const PlantCard = styled(motion.div)`
 
 const PlantInfo = styled.div`
   padding: 1.5rem;
+  background: var(--bg-secondary);
 
   @media (max-width: 768px) {
     padding: 1rem;
@@ -279,6 +264,7 @@ const PlantName = styled.h3`
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.01em;
+  font-size: 1.15rem;
 
   @media (max-width: 768px) {
     font-size: 1.1rem;
@@ -287,13 +273,14 @@ const PlantName = styled.h3`
 
 const PlantDescription = styled.p`
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   margin: 0;
   line-height: 1.6;
   font-weight: 400;
+  opacity: 0.9;
 
   @media (max-width: 768px) {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     line-height: 1.5;
   }
 `;

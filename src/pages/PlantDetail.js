@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
-import OptimizedPlantModel from '../components/OptimizedPlantModel';
 import FavoriteButton from '../components/FavoriteButton';
 import plants from '../data/plants';
 
@@ -111,21 +110,6 @@ const ContentGrid = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-  }
-`;
-
-const ModelSection = styled(motion.div)`
-  background: var(--bg-secondary);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-    border-radius: 1rem;
   }
 `;
 
@@ -354,24 +338,10 @@ function PlantDetail() {
       </PlantHeader>
 
       <ContentGrid>
-        <ModelSection
-          initial={{ opacity: 0, x: -20 }}
+        <InfoSection
+          initial={{ opacity: 0, x: 0 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
-        >
-          <SectionTitle>3D Model</SectionTitle>
-          <OptimizedPlantModel 
-            modelPath={plant.model} 
-            scale={plant.scale || 1} 
-            position={plant.position || [0, 0, 0]}
-            fallbackImage={plant.image}
-          />
-        </ModelSection>
-
-        <InfoSection
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
         >
           <SectionTitle>Overview</SectionTitle>
           <InfoList>

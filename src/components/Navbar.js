@@ -3,25 +3,19 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Nav = styled.nav`
-  background: ${props => props.$scrolled 
-    ? 'rgba(255, 255, 255, 0.8)' 
-    : 'rgba(255, 255, 255, 0.95)'};
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 1.25rem 2rem;
-  box-shadow: ${props => props.$scrolled 
-    ? '0 4px 24px rgba(0, 0, 0, 0.08)' 
-    : '0 1px 3px rgba(0, 0, 0, 0.04)'};
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 0.75rem 2rem;
+  box-shadow: none;
   position: sticky;
   top: 0;
   z-index: 1000;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-bottom: 1px solid ${props => props.$scrolled 
-    ? 'rgba(0, 0, 0, 0.08)' 
-    : 'rgba(0, 0, 0, 0.05)'};
+  border-bottom: none;
 
   @media (max-width: 768px) {
-    padding: 1rem 1.5rem;
+    padding: 0.75rem 1.5rem;
   }
 `;
 
@@ -94,6 +88,7 @@ const NavLink = styled(Link)`
   padding: 0.5rem 0.25rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   letter-spacing: -0.01em;
+  opacity: 0.85;
   
   &::after {
     content: '';
@@ -102,13 +97,14 @@ const NavLink = styled(Link)`
     left: 0.25rem;
     width: 0;
     height: 2.5px;
-    background: var(--accent-gradient);
+    background: var(--accent-primary);
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 2px;
   }
   
   &:hover {
     color: var(--accent-primary);
+    opacity: 1;
   }
   
   &:hover::after {
@@ -118,6 +114,7 @@ const NavLink = styled(Link)`
   &.active {
     color: var(--accent-primary);
     font-weight: 600;
+    opacity: 1;
   }
   
   &.active::after {
