@@ -69,27 +69,45 @@ const ErrorSubtext = styled.div`
   color: var(--text-tertiary);
 `;
 
-function Model({ modelPath, scale = 1, position = [0, 0, 0] }) {
+function Model({ modelPath, scale = 1, position = [0, 0, 0], onLoaded }) {
   const { scene } = useGLTF(modelPath);
-  
-  // Clone the scene to prevent issues with multiple instances
+
   const clonedScene = useMemo(() => scene.clone(), [scene]);
-  
+
+  useEffect(() => {
+    if (scene && onLoaded) {
+      onLoaded(); // ✅ notify parent
+    }
+  }, [scene, onLoaded]);
+
   return (
-    <primitive 
-      object={clonedScene} 
-      scale={scale} 
-      position={position} 
-      castShadow 
-      receiveShadow 
+    <primitive
+      object={clonedScene}
+      scale={scale}
+      position={position}
+      castShadow
+      receiveShadow
     />
   );
 }
 
+
 function OptimizedPlantModel({ modelPath, scale = 1, position = [0, 0, 0], fallbackImage }) {
+  const timeoutRef = React.useRef(null);
   const [hasError, setHasError] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+const handleModelLoaded = () => {
+  setIsLoading(false);
+  setHasError(false);
+
+  if (timeoutRef.current) {
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = null;
+  }
+};
+
 
   // Validate model path on mount and changes
   useEffect(() => {
@@ -121,18 +139,22 @@ function OptimizedPlantModel({ modelPath, scale = 1, position = [0, 0, 0], fallb
 
   // Timeout fallback - if model doesn't load in 8 seconds, show error
   useEffect(() => {
-    if (!modelPath || hasError || !isLoading) return;
+  if (!modelPath || hasError || !isLoading) return;
 
-    const timeout = setTimeout(() => {
-      console.warn('3D Model loading timeout after 8 seconds:', modelPath);
-      setHasError(true);
-      setIsLoading(false);
-    }, 8000);
+  timeoutRef.current = setTimeout(() => {
+    console.warn('3D Model loading timeout after 8 seconds:', modelPath);
+    setHasError(true);
+    setIsLoading(false);
+  }, 8000);
 
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [modelPath, hasError, isLoading]);
+  return () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+}, [modelPath, hasError, isLoading]);
+
 
   // Show error state with fallback image if available
   if (hasError) {
@@ -226,12 +248,14 @@ function OptimizedPlantModel({ modelPath, scale = 1, position = [0, 0, 0], fallb
           </Html>
         }>
           <Center>
-            <Model 
-              modelPath={modelPath} 
-              scale={scale} 
-              position={position}
-            />
-          </Center>
+       	   <Model
+             modelPath={modelPath}
+   	     scale={scale}
+    	     position={position}
+ 	     onLoaded={handleModelLoaded}
+	    />
+	  </Center>
+
           <OrbitControls 
             enablePan={!isMobile}
             enableZoom 
