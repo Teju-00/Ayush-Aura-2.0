@@ -1,290 +1,154 @@
-import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import SEO from '../components/SEO';
-import FavoriteButton from '../components/FavoriteButton';
-import plants from '../data/plants';
+import React, { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { motion } from "framer-motion";
+import SEO from "../components/SEO";
+import FavoriteButton from "../components/FavoriteButton";
+import plants from "../data/plants";
+
+/* ---------------- Layout ---------------- */
 
 const PageContainer = styled(motion.div)`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  overflow-x: hidden;
 
   @media (max-width: 768px) {
     padding: 1rem;
   }
 `;
 
-const BackButton = styled(motion.button)`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-tertiary);
+const BackButton = styled.button`
+  background: transparent;
   border: 1px solid var(--border-color);
   color: var(--accent-primary);
-  padding: 0.6rem 1.2rem;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
-  line-height: 1;
+  padding: 0.5rem 1rem;
+  border-radius: 0.6rem;
   cursor: pointer;
-  border-radius: 0.75rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 600;
-  gap: 0.5rem;
-  min-width: auto;
-  min-height: auto;
+  margin-bottom: 1.5rem;
 
   &:hover {
     background: var(--accent-light);
-    border-color: var(--accent-primary);
-    transform: translateX(-4px);
-    box-shadow: var(--shadow-md);
   }
-
-  &:focus {
-    outline: 2px solid var(--accent-primary);
-    outline-offset: 2px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
-  }
-`;
-
-const BackIcon = styled.span`
-  font-size: 1.3rem;
-  font-weight: 700;
 `;
 
 const PlantHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 2rem;
-
-  @media (max-width: 768px) {
-    margin-bottom: 1.5rem;
-  }
 `;
 
-const PlantName = styled(motion.h1)`
-  font-size: 2.5rem;
+const PlantName = styled.h1`
+  font-size: 2.4rem;
   font-weight: 800;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 1rem;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-    line-height: 1.2;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 1.5rem;
-  }
 `;
 
-const PlantCategory = styled(motion.span)`
+const PlantCategory = styled.span`
   display: inline-block;
-  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.9rem;
   background: var(--accent-gradient);
-  color: white;
-  border-radius: 0.75rem;
-  font-size: 0.9rem;
+  color: #fff;
+  border-radius: 0.6rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  box-shadow: var(--shadow-glow);
-
-  @media (max-width: 768px) {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
 `;
 
 const ContentGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  
-  @media (max-width: 768px) {
+
+  @media (max-width: 900px) {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
   }
 `;
 
-const StructuredSection = styled(motion.section)`
-  margin-top: 2rem;
-  padding: 1.5rem;
+/* ---------------- 3D Model ---------------- */
+
+const ModelSection = styled.div`
   background: var(--bg-secondary);
   border-radius: 1rem;
+  padding: 1rem;
   border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-    margin-top: 1.5rem;
-  }
 `;
 
-const SectionHeading = styled.h3`
-  font-size: 1.3rem;
-  color: var(--accent-primary);
-  margin-bottom: 1rem;
-  font-weight: 700;
+const ModelWrapper = styled.div`
+  width: 100%;
+  height: 420px;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #ffffff;
+`;
+
+const ModelFallback = styled.div`
+  height: 420px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-
-  &::before {
-    content: '🌿';
-    font-size: 1.5rem;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-  }
+  justify-content: center;
+  color: var(--text-secondary);
+  font-weight: 500;
 `;
 
-const BulletList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
+/* ---------------- Info ---------------- */
 
-  li {
-    padding: 0.5rem 0;
-    color: var(--text-secondary);
-    padding-left: 1.5rem;
-    position: relative;
-
-    &::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      color: var(--accent-primary);
-      font-weight: bold;
-    }
-  }
+const InfoSection = styled.div`
+  background: var(--bg-secondary);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 1.5rem;
-  color: var(--text-primary);
+  font-size: 1.3rem;
   margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--border-color);
-  font-weight: 700;
-
-  @media (max-width: 768px) {
-    font-size: 1.3rem;
-    margin-bottom: 0.8rem;
-  }
-`;
-
-const InfoSection = styled(motion.div)`
-  background: var(--bg-secondary);
-  border-radius: 1.5rem;
-  padding: 2rem;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-
-  @media (max-width: 768px) {
-    border-radius: 1rem;
-    padding: 1.5rem;
-  }
-`;
-
-const InfoList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-`;
-
-const InfoItem = styled(motion.li)`
-  margin-bottom: 1rem;
-  padding: 1.2rem;
-  background: var(--bg-tertiary);
-  border-radius: 0.75rem;
-  border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: var(--accent-light);
-    transform: translateX(4px);
-    box-shadow: var(--shadow-sm);
-  }
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-    margin-bottom: 0.8rem;
-  }
-`;
-
-const InfoLabel = styled.strong`
-  display: block;
   color: var(--accent-primary);
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  font-size: 1rem;
-
-  @media (max-width: 768px) {
-    font-size: 0.95rem;
-  }
 `;
 
-const InfoValue = styled.p`
+const InfoItem = styled.div`
+  margin-bottom: 1rem;
+`;
+
+const Label = styled.strong`
+  display: block;
+  margin-bottom: 0.3rem;
+`;
+
+const Text = styled.p`
   color: var(--text-secondary);
   margin: 0;
   line-height: 1.6;
-
-  @media (max-width: 768px) {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
 `;
+
+/* ---------------- Animations ---------------- */
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -20 }
 };
 
-const itemVariants = {
-  initial: { opacity: 0, x: -20 },
-  animate: { opacity: 1, x: 0 }
-};
+/* ---------------- Component ---------------- */
 
-function PlantDetail() {
+export default function PlantDetail() {
   const { id } = useParams();
-  const plant = plants.find(p => p.id === Number(id));
   const navigate = useNavigate();
+  const plant = plants.find((p) => p.id === Number(id));
 
   useEffect(() => {
-    // Scroll to top on mount
     window.scrollTo(0, 0);
   }, [id]);
 
-  const handleBackNavigation = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-    } else {
-      navigate('/plants');
-    }
-  };
-
   if (!plant) {
     return (
-      <PageContainer
-        initial="initial"
-        animate="animate"
-        variants={pageVariants}
-        style={{ textAlign: 'center', padding: '4rem 2rem' }}
-      >
+      <PageContainer>
         <h2>Plant not found</h2>
-        <p>The plant you're looking for doesn't exist.</p>
-        <BackButton onClick={() => navigate('/plants')} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <BackButton onClick={() => navigate("/plants")}>
           ← Back to Plants
         </BackButton>
       </PageContainer>
@@ -293,147 +157,99 @@ function PlantDetail() {
 
   return (
     <PageContainer
+      variants={pageVariants}
       initial="initial"
       animate="animate"
-      exit="exit"
-      variants={pageVariants}
       transition={{ duration: 0.4 }}
     >
-      <BackButton 
-        onClick={handleBackNavigation} 
-        aria-label="Go back" 
-        title="Back"
-        whileHover={{ x: -4 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        ← Back
-      </BackButton>
-      
+      <BackButton onClick={() => navigate(-1)}>← Back</BackButton>
+
       <SEO
         title={plant.name}
         description={plant.description}
         image={plant.image}
         type="article"
       />
+
       <PlantHeader>
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
-          <div style={{ flex: 1 }}>
-            <PlantName
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              {plant.name}
-            </PlantName>
-            <PlantCategory
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              {plant.category}
-            </PlantCategory>
-          </div>
-          <FavoriteButton plantId={plant.id} />
+        <div>
+          <PlantName>{plant.name}</PlantName>
+          <PlantCategory>{plant.category}</PlantCategory>
         </div>
+        <FavoriteButton plantId={plant.id} />
       </PlantHeader>
 
       <ContentGrid>
-        <InfoSection
-          initial={{ opacity: 0, x: 0 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-        >
+        {/* ---------- 3D MODEL ---------- */}
+        <ModelSection>
+          <SectionTitle>3D Model</SectionTitle>
+
+          {plant.modelUrl ? (
+            <ModelWrapper>
+              <model-viewer
+                src={plant.modelUrl}
+                alt={`${plant.name} 3D model`}
+                camera-controls
+                auto-rotate
+                rotation-per-second="30deg"
+                shadow-intensity="1"
+                style={{ width: "100%", height: "100%" }}
+              />
+            </ModelWrapper>
+          ) : (
+            <ModelFallback>No 3D model available</ModelFallback>
+          )}
+        </ModelSection>
+
+        {/* ---------- INFO ---------- */}
+        <InfoSection>
           <SectionTitle>Overview</SectionTitle>
-          <InfoList>
-            <InfoItem
-              variants={itemVariants}
-              initial="initial"
-              animate="animate"
-              transition={{ delay: 0.5 }}
-            >
-              <InfoLabel>Scientific Name</InfoLabel>
-              <InfoValue>{plant.scientificName}</InfoValue>
-            </InfoItem>
-            <InfoItem
-              variants={itemVariants}
-              initial="initial"
-              animate="animate"
-              transition={{ delay: 0.6 }}
-            >
-              <InfoLabel>Description</InfoLabel>
-              <InfoValue>{plant.description}</InfoValue>
-            </InfoItem>
-          </InfoList>
+
+          <InfoItem>
+            <Label>Scientific Name</Label>
+            <Text>{plant.scientificName}</Text>
+          </InfoItem>
+
+          <InfoItem>
+            <Label>Description</Label>
+            <Text>{plant.description}</Text>
+          </InfoItem>
         </InfoSection>
       </ContentGrid>
 
+      {/* ---------- EXTRA SECTIONS ---------- */}
       {plant.medicinalProperties && (
-        <StructuredSection
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-        >
-          <SectionHeading>Medicinal Properties</SectionHeading>
-          <BulletList>
-            {plant.medicinalProperties.map((prop, idx) => (
-              <motion.li
-                key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 + idx * 0.1 }}
-              >
-                {prop}
-              </motion.li>
+        <InfoSection style={{ marginTop: "2rem" }}>
+          <SectionTitle>Medicinal Properties</SectionTitle>
+          <ul>
+            {plant.medicinalProperties.map((p, i) => (
+              <li key={i}>{p}</li>
             ))}
-          </BulletList>
-        </StructuredSection>
+          </ul>
+        </InfoSection>
       )}
 
       {plant.uses && (
-        <StructuredSection
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
-        >
-          <SectionHeading>Traditional Uses</SectionHeading>
-          <BulletList>
-            {plant.uses.map((use, idx) => (
-              <motion.li
-                key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.0 + idx * 0.1 }}
-              >
-                {use}
-              </motion.li>
+        <InfoSection style={{ marginTop: "2rem" }}>
+          <SectionTitle>Traditional Uses</SectionTitle>
+          <ul>
+            {plant.uses.map((u, i) => (
+              <li key={i}>{u}</li>
             ))}
-          </BulletList>
-        </StructuredSection>
+          </ul>
+        </InfoSection>
       )}
 
       {plant.funFacts && (
-        <StructuredSection
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1 }}
-        >
-          <SectionHeading>Interesting Facts</SectionHeading>
-          <BulletList>
-            {plant.funFacts.map((fact, idx) => (
-              <motion.li
-                key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2 + idx * 0.1 }}
-              >
-                {fact}
-              </motion.li>
+        <InfoSection style={{ marginTop: "2rem" }}>
+          <SectionTitle>Interesting Facts</SectionTitle>
+          <ul>
+            {plant.funFacts.map((f, i) => (
+              <li key={i}>{f}</li>
             ))}
-          </BulletList>
-        </StructuredSection>
+          </ul>
+        </InfoSection>
       )}
     </PageContainer>
   );
 }
-
-export default PlantDetail; 
