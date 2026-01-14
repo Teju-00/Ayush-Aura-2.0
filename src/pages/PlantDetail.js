@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import SEO from '../components/SEO';
+import OptimizedPlantModel from '../components/OptimizedPlantModel';
 import FavoriteButton from '../components/FavoriteButton';
 import plants from '../data/plants';
 
@@ -113,7 +114,6 @@ const ContentGrid = styled.div`
   }
 `;
 
-
 const ModelSection = styled(motion.div)`
   background: var(--bg-secondary);
   border-radius: 1.5rem;
@@ -128,7 +128,6 @@ const ModelSection = styled(motion.div)`
     border-radius: 1rem;
   }
 `;
-
 
 const StructuredSection = styled(motion.section)`
   margin-top: 2rem;
@@ -355,10 +354,24 @@ function PlantDetail() {
       </PlantHeader>
 
       <ContentGrid>
-        <InfoSection
-          initial={{ opacity: 0, x: 0 }}
+        <ModelSection
+          initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
+        >
+          <SectionTitle>3D Model</SectionTitle>
+          <OptimizedPlantModel 
+            modelPath={plant.model} 
+            scale={plant.scale || 1} 
+            position={plant.position || [0, 0, 0]}
+            fallbackImage={plant.image}
+          />
+        </ModelSection>
+
+        <InfoSection
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.4 }}
         >
           <SectionTitle>Overview</SectionTitle>
           <InfoList>
